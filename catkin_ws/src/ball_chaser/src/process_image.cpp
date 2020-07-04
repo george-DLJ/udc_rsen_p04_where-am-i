@@ -2,7 +2,6 @@
 #include "ball_chaser/DriveToTarget.h"
 #include <sensor_msgs/Image.h>
 
-
 enum class PixelLocation
 {
 	Left,
@@ -10,6 +9,9 @@ enum class PixelLocation
 	Right
 };
 
+const int SIDES_SIZE_PERCENTAGE = 25;
+const float YAW_SPEED = 0.25; //angular_x speed
+const float FWD_SPEED = 0.1; //linear_x speed
 // Define a global client that can request services
 ros::ServiceClient client;
 
@@ -24,82 +26,60 @@ void drive_robot(float lin_x, float ang_z)
 	driveToTargetSrv.request.linear_x = lin_x;
 	driveToTargetSrv.request.angular_z = ang_z;
 	client.call(driveToTargetSrv);
-
-}
-
-PixelLocation getLocation(int column, int maxColumn)
-{
-	
-
-	if(column < (maxColumn / 3))
-	{
-		 ROS_INFO("process_image.cpp: getLocation(): column:%d, maxColumn: %d", (int)column,(int)maxColumn);	
-		return PixelLocation::Left;
-	}
-	if (column > (2 * maxColumn / 3))
-    	{
-		return PixelLocation::Right;
-	}
-	return PixelLocation::Mid;
 }
 
 // This callback function continuously executes and reads the image data
+// New approach: to prioritize steering over moving, the pixel search loop checks first sides,
+//               then the middle part.
 void process_image_callback(const sensor_msgs::Image img)
 {
-//	ROS_INFO("process_image.cpp::process_image_callback(): img.width:%d, img.height:%d", (int)img.height, (int)img.width);
     int white_pixel = 255;
 	
     // DONE: Loop through each pixel in the image and check if there's a bright white one
     // Then, identify if this pixel falls in the left, mid, or right side of the image
     // Depending on the white ball position, call the drive_bot function and pass velocities to it
     // Request a stop when there's no white ball seen by the camera
-	int maxColLeft = img.step/4;
-	int minColRight = 3 * img.step/4;
+	int maxColLeft = (img.step * SIDES_SIZE_PERCENTAGE) / 100;
+	int minColRight = (img.step * (100-SIDES_SIZE_PERCENTAGE))/100;
 	int pixel;
 	for (int row = 0; row < img.height; row+=5)
 	{
-		// search left section:
+		//1. search left section:
 		for(int col = 0; col < maxColLeft; col+=5)
 		{ 
 			pixel = img.data[img.step * row + col];			
 			if (pixel == white_pixel){
 				ROS_INFO("process_image.cpp::process_image_callback(): Found->Left row:%d, col:%d", (int)row, (int)col);
-				drive_robot(0.0, 0.1);
+				drive_robot(0.0, YAW_SPEED);
 				return;
 			}
 		}
-		// search right section: 
+		//2. then search right section: 
 		for(int col = img.step - 1 ; col > minColRight; col-=5)
 		{ 
 			pixel = img.data[img.step * row + col];			
 			if (pixel == white_pixel){
 				ROS_INFO("process_image.cpp::process_image_callback(): found->Right row:%d, col:%d", (int)row, (int)col);
 				// turn right:
-				drive_robot(0.0, -0.1);
+				drive_robot(0.0, (-1.0 * YAW_SPEED) );
 				return;
-
-			
 			}
 		}
-		// search mid section:
+		//3. finally search mid section:
 		for(int col = maxColLeft ; col < minColRight; col+=5)
 		{ 
 			pixel = img.data[img.step * row + col];			
 			if (pixel == white_pixel){
 				ROS_INFO("process_image.cpp::process_image_callback(): found->Midt row:%d, col:%d", (int)row, (int)col);				
 				// drive forward:
-				drive_robot(0.1, 0.0);
+				drive_robot(FWD_SPEED, 0.0);
 				return;
-			
 			}
 		}		
-		
 	}
 	// pixel not found --> stop
 	drive_robot(0.0, 0.0);
 }
-
-
 
 int main(int argc, char** argv)
 {
