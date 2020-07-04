@@ -1,13 +1,11 @@
 <?xml version='1.0'?>
 
 <robot name="my_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:include filename="$(find my_robot)/urdf/my_robot.gazebo" />
-  <!-- links -->
+
   <link name="robot_footprint"></link>
 
-   <link name='chassis'>
-    <pose>0 0 0.1 0 0 0</pose>
-
+  <link name='chassis'>
+    <pose>0 0 0.075 0 0 0</pose>
     <inertial>
       <mass value="15.0"/>
       <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
@@ -17,51 +15,47 @@
           izz="0.1"
       />
     </inertial>
-
-    <collision name='collision'>
+    <collision name='chassis_collision'>
       <origin xyz="0 0 0" rpy=" 0 0 0"/> 
       <geometry>
-        <box size=".4 .2 .1"/>
+        <box size=".4 .2 .05"/>
       </geometry>
     </collision>
-
     <visual name='chassis_visual'>
       <origin xyz="0 0 0" rpy=" 0 0 0"/>
       <geometry>
-        <box size=".4 .2 .1"/>
+        <box size=".4 .2 .05"/>
       </geometry>
     </visual>
-
-
     <collision name='back_caster_collision'>
-      <origin xyz="-0.15 0 -0.05" rpy=" 0 0 0"/>
+      <origin xyz="-0.15 0 -0.025" rpy=" 0 0 0"/>
       <geometry>
         <sphere radius="0.0499"/>
       </geometry>
     </collision>
 
     <visual name='back_caster_visual'>
-      <origin xyz="-0.15 0 -0.05" rpy=" 0 0 0"/>
+      <origin xyz="-0.15 0 -0.025" rpy=" 0 0 0"/>
       <geometry>
         <sphere radius="0.05"/>
       </geometry>
     </visual>
 
-    <collision name='front_caster_collision'>
-      <origin xyz="0.15 0 -0.05" rpy=" 0 0 0"/>
+   <collision name='front_caster_collision'>
+      <origin xyz="0.15 0 -0.025" rpy=" 0 0 0"/>
       <geometry>
         <sphere radius="0.0499"/>
       </geometry>
     </collision>
 
     <visual name='front_caster_visual'>
-      <origin xyz="0.15 0 -0.05" rpy=" 0 0 0"/>
+      <origin xyz="0.15 0 -0.025" rpy=" 0 0 0"/>
       <geometry>
         <sphere radius="0.05"/>
       </geometry>
     </visual>
-
   </link>
+ 
   <link name='left_wheel'>
     <inertial>
       <mass value="5.0"/>
@@ -72,18 +66,16 @@
           izz="0.1"
       />
     </inertial>
-
     <collision name='left_wheel_collision'>
       <origin xyz="0.0 0 0" rpy="0 1.5707 1.5707"/>
       <geometry>
-        <cylinder radius="0.1" length="0.05"/>
+        <cylinder radius="0.075" length="0.08"/>
       </geometry>
     </collision>
-
     <visual name='left_wheel_visual'>
       <origin xyz="0.0 0 0" rpy="0 1.5707 1.5707"/>
       <geometry>
-        <cylinder radius="0.1" length="0.05"/>
+        <cylinder radius="0.075" length="0.08"/>
       </geometry>
     </visual>
   </link>
@@ -98,18 +90,16 @@
           izz="0.1"
       />
     </inertial>
-
-    <collision name='left_wheel_collision'>
+    <collision name='right_wheel_collision'>
       <origin xyz="0.0 0 0" rpy="0 1.5707 1.5707"/>
       <geometry>
-        <cylinder radius="0.1" length="0.05"/>
+        <cylinder radius="0.075" length="0.08"/>
       </geometry>
     </collision>
-
-    <visual name='left_wheel_visual'>
+    <visual name='right_wheel_visual'>
       <origin xyz="0.0 0 0" rpy="0 1.5707 1.5707"/>
       <geometry>
-        <cylinder radius="0.1" length="0.05"/>
+        <cylinder radius="0.075" length="0.08"/>
       </geometry>
     </visual>
   </link>
@@ -124,18 +114,16 @@
           izz="1e-6"
       />
     </inertial>
-
     <collision name='camera_collision'>
       <origin xyz="0 0 0" rpy=" 0 0 0"/> 
       <geometry>
-        <box size=".05 .05 .05"/>
+        <box size=".025 .08 .05"/>
       </geometry>
     </collision>
-
     <visual name='camera_visual'>
       <origin xyz="0 0 0" rpy=" 0 0 0"/>
       <geometry>
-        <box size=".05 .05 .05"/>
+        <box size=".025 .08 .05"/>
       </geometry>
     </visual>
   </link>
@@ -150,14 +138,12 @@
           izz="1e-6"
       />
     </inertial>
-
     <collision name='hokuyo_collision'>
       <origin xyz="0 0 0" rpy=" 0 0 0"/> 
       <geometry>
         <box size=".1 .1 .1"/>
       </geometry>
     </collision>
-
     <visual name='hokuyo_visual'>
       <origin xyz="0 0 0" rpy=" 0 0 0"/>
       <geometry> 
@@ -165,15 +151,16 @@
       </geometry>
     </visual>
   </link>
+
   <!-- joints -->
- <joint name="robot_footprint_joint" type="fixed">
+  <joint name="robot_footprint_joint" type="fixed">
     <origin xyz="0 0 0" rpy="0 0 0" />
     <parent link="robot_footprint"/>
     <child link="chassis" />
   </joint>
 
   <joint name="left_wheel_hinge" type="continuous" >
-    <origin xyz="0 0.15 0" rpy="0 0 0"/>
+    <origin xyz="0.125 0.15 0" rpy="0 0 0"/>
     <child link="left_wheel"/>
     <parent link="chassis"/>
     <axis xyz="0 1 0" rpy="0 0 0"/>
@@ -182,7 +169,7 @@
   </joint>
 
   <joint name="right_wheel_hinge" type="continuous" >
-    <origin xyz="0 -0.15 0" rpy="0 0 0"/>
+    <origin xyz="0.125 -0.15 0" rpy="0 0 0"/>
     <child link="right_wheel"/>
     <parent link="chassis"/>
     <axis xyz="0 1 0" rpy="0 0 0"/>
@@ -191,29 +178,31 @@
   </joint>
 
   <joint name="camera_joint" type="fixed">
-    <origin xyz="0.2 0 0" rpy="0 0 0" />
+    <origin xyz="0.2125 0 0" rpy="0 0 0" />
     <parent link="chassis"/>
     <child link="camera" />
     <axis xyz="0 1 0" rpy="0 0 0"/>
   </joint>
 
   <joint name="hokuyo_joint" type="fixed">
-    <origin xyz=".15 0 .1" rpy="0 0 0" />
+    <origin xyz=".15 0 .075" rpy="0 0 0" />
     <parent link="chassis"/>
     <child link="hokuyo" />
     <axis xyz="0 1 0" rpy="0 0 0"/>
   </joint>
+
   <!-- colors -->
   <gazebo reference="left_wheel">
-    <material>Gazebo/Green</material>
+    <material>Gazebo/Red</material>
   </gazebo>
   <gazebo reference="right_wheel">
     <material>Gazebo/Green</material>
   </gazebo>
   <gazebo reference="chassis">
-    <material>Gazebo/Blue</material>
+    <material>Gazebo/Orange</material>
   </gazebo>
   <gazebo reference="camera">
-    <material>Gazebo/Red</material>
+    <material>Gazebo/Yellow</material>
   </gazebo>
+
 </robot>
