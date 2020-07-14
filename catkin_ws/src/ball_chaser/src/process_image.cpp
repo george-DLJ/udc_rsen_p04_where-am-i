@@ -11,33 +11,26 @@ enum class PixelLocation
 };
 
 const int SIDES_SIZE_PERCENTAGE = 25; //percentage of the image width used for left and right sections.
-const float YAW_SPEED = 0.15; //angular_x speed
-const float FWD_SPEED = 0.1; //linear_x speed
+const float YAW_SPEED = 0.25; //angular_x speed
+const float FWD_SPEED = 0.2; //linear_x speed
 
 const int RGB8_DATA_SIZE = 3; // number of bytes of data per pixel on data array.
 const int RGB8_R = 0;	// Offset of R data byte
 const int RGB8_G = 1; 	// Offset of G data byte
 const int RGB8_B = 2; 	// Offset of B data byte
 
-struct RGB8_Pixel{
-	uint8_t r;
-	uint8_t g;
-	uint8_t b;
-};
-
-
 bool isPixelWhite(sensor_msgs::Image img, int row, int col)
 {
-	return img.data[(row * img.step + col * RGB8_DATA_SIZE) + 0] == 255 && 
-	       img.data[(row * img.step + col * RGB8_DATA_SIZE) + 1] == 255 &&
-		   img.data[(row * img.step + col * RGB8_DATA_SIZE) + 2] == 255;
+	return img.data[(row * img.step + col * RGB8_DATA_SIZE) + RGB8_R] == 255 && 
+	       img.data[(row * img.step + col * RGB8_DATA_SIZE) + RGB8_G] == 255 &&
+	       img.data[(row * img.step + col * RGB8_DATA_SIZE) + RGB8_B] == 255;
 }
 
 bool isPixelWhite(uint8_t r, uint8_t g, uint8_t b)
 {
 	return (r == 255) && 
-		   (g == 255) && 
-		   (b == 255);
+	       (g == 255) && 
+	       (b == 255);
 }
 
 /// Determine the location of the pixel based on given pixel column position and the 
