@@ -1,4 +1,4 @@
-prefix=/home/workspace/catkin_ws/devel
+prefix=/home/workspace/udc_rsen_p04_where-am-i/catkin_ws/devel
 
 Name: my_robot
 Description: Description of my_robot

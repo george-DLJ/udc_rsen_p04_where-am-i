@@ -1,2 +1,2 @@
 - setup-file:
-    local-name: /home/workspace/catkin_ws/install/setup.sh
+    local-name: /home/workspace/udc_rsen_p04_where-am-i/catkin_ws/install/setup.sh
