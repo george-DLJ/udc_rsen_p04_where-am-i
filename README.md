@@ -1,4 +1,6 @@
-# Project: Where Am I?  
+# Udacity course project 04: Where am I?  
+Udacity robotics course: Project 04 where am I
+
 Overview:
 Goals of this project is to expand the robot form Project 02 with localization using ROS AMCL package to accurately localize a mobile robot inside a map in the Gazebo simulation environments.
 
