@@ -17,22 +17,29 @@
     <param name="initial_pose_a" value="-1.5707"/> 
 
     <!-- SUGGESTED paramters -->
-    <param name="min_particles" value="100"/>
-    <param name="max_particles" value="2000"/> <!-- 5000 -->
-    <param name="transform_tolerance" value="0.2"/>
+    <param name="min_particles" value="50"/>  <!-- default: 100  TODO: feedback: reduce? -->
+    <param name="max_particles" value="100"/> <!-- default: 5000 TODO: feedback: reduce -->
+    <param name="transform_tolerance" value="0.2"/> <!-- default:0.2 -->
+    <param name="odom_alpha1" value="0.2"/> <!-- default:0.2  TODO: feedback: add alphas-->
+    <param name="odom_alpha2" value="0.2"/> <!-- default:0.2  TODO: feedback: add alphas-->	
+    <param name="odom_alpha3" value="0.2"/> <!-- default:0.2  TODO: feedback: add alphas-->
+    <param name="odom_alpha4" value="0.2"/> <!-- default:0.2  TODO: feedback: add alphas-->
 
     <!-- CUSTOM parameters: Laser -->
     <param name="laser_min_range" value="-1.0"/>
     <param name="laser_max_range" value="-1.0"/>
     <param name="laser_min_beams" value="30"/>
-    <param name="laser_z_hit" value="0.95"/>
-    <param name="laser_z_rand" value="0.05"/>
     <param name="laser_model_type" value="likelihood_field"/>
+    <!-- REMEMBER: laser_z_hit + laser_z_rand should sum 1.00 -->
+    <param name="laser_z_hit" value="0.95"/> <!-- default: 0.95  TODO: feedback: increase -->
+    <param name="laser_z_rand" value="0.05"/> <!-- default: 0.05  TODO: feedback: reduce? -->
+
   </node>
 
-  <!-- DONE: Add Move Base Node -->
+  <!-- OPTIONAL: Add Move Base Node -->
   <!-- Note that this step is optional if you choose to use teleop node to control and localize your robot. -->
-  <node name="move_base" pkg="move_base" type="move_base" respawn="false" output="screen">
+    <!-- (DISABLED: using teleop)
+    <node name="move_base" pkg="move_base" type="move_base" respawn="false" output="screen">
     <remap from="scan" to="scan"/>
     <param name="base_global_planner" value="navfn/NavfnROS" />
     <param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS"/>
@@ -41,6 +48,7 @@
   <rosparam file="$(find my_robot)/config/local_costmap_params.yaml" command="load" />
   <rosparam file="$(find my_robot)/config/global_costmap_params.yaml" command="load" />
   <rosparam file="$(find my_robot)/config/base_local_planner_params.yaml" command="load" />
-  </node>
+  </node> 
+  -->
 
 </launch>

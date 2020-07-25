@@ -7,12 +7,12 @@
   <link name='chassis'>
     <pose>0 0 0.075 0 0 0</pose>
     <inertial>
-      <mass value="10.0"/>
+      <mass value="20.0"/>
       <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
       <inertia
-          ixx="0.1" ixy="0" ixz="0"
-          iyy="0.1" iyz="0"
-          izz="0.1"
+          ixx="0.08" ixy="0" ixz="0"
+          iyy="0.15" iyz="0"
+          izz="0.22"
       />
     </inertial>
     <collision name='chassis_collision'>
@@ -28,52 +28,50 @@
       </geometry>
     </visual>
     <collision name='back_caster_collision'>
-      <origin xyz="-0.10 0 -0.025" rpy=" 0 0 0"/>
+      <origin xyz="-0.10 0 -0.055" rpy=" 0 0 0"/>
       <geometry>
-        <sphere radius="0.0499"/>
+        <sphere radius="0.0199"/>
       </geometry>
     </collision>
 
     <visual name='back_caster_visual'>
-      <origin xyz="-0.10 0 -0.025" rpy=" 0 0 0"/>
+      <origin xyz="-0.10 0 -0.055" rpy=" 0 0 0"/>
       <geometry>
-        <sphere radius="0.05"/>
+        <sphere radius="0.020"/>
       </geometry>
     </visual>
-
-   <collision name='front_caster_collision'>
-      <origin xyz="0.10 0 -0.025" rpy=" 0 0 0"/>
+    <collision name='front_caster_collision'>
+      <origin xyz="0.10 0 -0.055" rpy=" 0 0 0"/>
       <geometry>
-        <sphere radius="0.0499"/>
+        <sphere radius="0.0199"/>
       </geometry>
     </collision>
 
     <visual name='front_caster_visual'>
-      <origin xyz="0.10 0 -0.025" rpy=" 0 0 0"/>
+      <origin xyz="0.10 0 -0.055" rpy=" 0 0 0"/>
       <geometry>
-        <sphere radius="0.05"/>
+        <sphere radius="0.020"/>
       </geometry>
     </visual>
   </link>
  
   <link name='left_wheel'>
     <inertial>
-      <mass value="5.0"/>
-      <origin xyz="0.0 0 0" rpy="0 1.5707 1.5707"/>
+      <mass value="10.0"/>
       <inertia
-          ixx="0.1" ixy="0" ixz="0"
-          iyy="0.1" iyz="0"
-          izz="0.1"
+          ixx="0.015" ixy="0" ixz="0"
+          iyy="0.015" iyz="0"
+          izz="0.030"
       />
     </inertial>
     <collision name='left_wheel_collision'>
-      <origin xyz="0.0 0 0" rpy="0 1.5707 1.5707"/>
+      <origin xyz="0.0 0 0" rpy="1.5707 0 0"/>
       <geometry>
         <cylinder radius="0.075" length="0.04"/>
       </geometry>
     </collision>
     <visual name='left_wheel_visual'>
-      <origin xyz="0.0 0 0" rpy="0 1.5707 1.5707"/>
+      <origin xyz="0.0 0 0" rpy="1.5707 0  0"/>
       <geometry>
         <cylinder radius="0.075" length="0.04"/>
       </geometry>
@@ -81,23 +79,22 @@
   </link>
 
   <link name='right_wheel'>
-    <inertial>
-      <mass value="5.0"/>
-      <origin xyz="0.0 0 0" rpy="0 1.5707 1.5707"/>
+     <inertial>
+      <mass value="10.0"/>
       <inertia
-          ixx="0.1" ixy="0" ixz="0"
-          iyy="0.1" iyz="0"
-          izz="0.1"
+          ixx="0.015" ixy="0" ixz="0"
+          iyy="0.015" iyz="0"
+          izz="0.030"
       />
     </inertial>
     <collision name='right_wheel_collision'>
-      <origin xyz="0.0 0 0" rpy="0 1.5707 1.5707"/>
+      <origin xyz="0.0 0 0" rpy="1.5707 0 0"/>
       <geometry>
         <cylinder radius="0.075" length="0.04"/>
       </geometry>
     </collision>
     <visual name='right_wheel_visual'>
-      <origin xyz="0.0 0 0" rpy="0 1.5707 1.5707"/>
+      <origin xyz="0.0 0 0" rpy="1.5707 0  0"/>
       <geometry>
         <cylinder radius="0.075" length="0.04"/>
       </geometry>
@@ -157,10 +154,11 @@
     <origin xyz="0 0 0" rpy="0 0 0" />
     <parent link="robot_footprint"/>
     <child link="chassis" />
+    <dynamics friction="0.0"/>
   </joint>
 
   <joint name="left_wheel_hinge" type="continuous" >
-    <origin xyz="0.05 0.125 0" rpy="0 0 0"/>
+    <origin xyz="0.00 0.125 0" rpy="0 0 0"/>
     <child link="left_wheel"/>
     <parent link="chassis"/>
     <axis xyz="0 1 0" rpy="0 0 0"/>
@@ -169,7 +167,7 @@
   </joint>
 
   <joint name="right_wheel_hinge" type="continuous" >
-    <origin xyz="0.05 -0.125 0" rpy="0 0 0"/>
+    <origin xyz="0.00 -0.125 0" rpy="0 0 0"/>
     <child link="right_wheel"/>
     <parent link="chassis"/>
     <axis xyz="0 1 0" rpy="0 0 0"/>
